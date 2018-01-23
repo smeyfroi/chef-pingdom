@@ -115,7 +115,7 @@ action :delete do
 end
 
 def load_current_resource
-  @current_resource = Chef::Resource::PingdomCheck.new(@new_resource.name)
+  @current_resource = Chef::Resource.resource_for_node(:pingdom_check, node).new(@new_resource.name)
   if check_exists?(@new_resource.name,@new_resource.type)
     @current_resource.type(@new_resource.type)
     @current_resource.host(@new_resource.host)
