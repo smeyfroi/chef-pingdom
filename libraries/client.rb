@@ -54,7 +54,6 @@ module Pingdom
       add_creds!(options)
       response = get('/checks', options)
       if response.code == 200
-        Chef::Log.info("got checks")
         data = ::JSON.parse(response)
         data['checks']
       else

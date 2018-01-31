@@ -16,23 +16,6 @@
 
 require 'json'
 
-def load_gem
-  begin
-    require 'rest-client'
-  rescue LoadError
-    Chef::Log.info "rest-client gem not found. Attempting to install "
-    chef_gem 'rest-client' do
-      version node['pingdom']['api']['gem']['version']
-    end
-  end
-end
-
-def initialize(new_resource, run_context=nil)
-  super
-  load_gem
-  pingdom_api
-end
-
 action :add do
   unless check_exists?(new_resource.name, new_resource.type)
     response = add_check(new_resource.name, new_resource.host, new_resource.type, new_resource.check_params)
@@ -140,7 +123,7 @@ def sanitize_params(params)
 end
 
 def pingdom_api
-  pingdom_api ||= Pingdom::Client.new(
+  Pingdom::Client.new(
     new_resource.username,
     new_resource.password,
     new_resource.api_key,
